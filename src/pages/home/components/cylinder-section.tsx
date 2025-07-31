@@ -19,7 +19,7 @@ export const CylinderSection = () => {
 
   useEffect(() => {
     const unsubscribe = scrollY.on('change', (latest) => {
-      if (latest < 400 || !ringRef.current || !cylinderRef.current || thresholdReached) {
+      if (latest < 350 || !ringRef.current || !cylinderRef.current || thresholdReached) {
         return;
       }
 
@@ -47,12 +47,14 @@ export const CylinderSection = () => {
             left: `${currentLeft}px`,
             width: `${currentWidth}px`,
             height: `${currentHeight}px`,
+            borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%',
           },
           {
             top: `${targetTop}px`,
             left: `${targetLeft}px`,
             width: `${targetWidth}px`,
             height: `${targetHeight}px`,
+            borderRadius: '50%',
           },
         ],
         { duration: 1000, easing: 'ease-in-out', fill: 'forwards' }
@@ -68,7 +70,8 @@ export const CylinderSection = () => {
     <>
       <div
         ref={ringRef}
-        className="fixed z-100 hidden size-8 rounded-full border-2 border-yellow-400"
+        className="fixed z-100 hidden size-8 border-2 border-yellow-400"
+        style={{ borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%' }}
       />
 
       <motion.div
