@@ -1,10 +1,10 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { Circle } from '@/components/icons/circle';
 import { Cylinder } from '@/components/icons/cylinder';
 
+import { navbarId } from '@/layout/global/navbar';
 import { cn } from '@/lib/utils';
 
 export const CylinderSection = () => {
@@ -16,47 +16,48 @@ export const CylinderSection = () => {
   const translateY = useTransform(scrollY, [0, 400], [0, -250]);
   const textColor = useTransform(scrollY, [0, 400], ['#f9e500', '#ffffff']);
 
-  //   useEffect(() => {
-  //     const unsubscribe = scrollY.on('change', (latest) => {
-  //       let startRingAnimation = false;
-  //       if (latest >= 400) {
-  //         startRingAnimation = true;
-  //       }
+  useEffect(() => {
+    if (!ringRef.current || !cylinderRef.current) {
+      return;
+    }
 
-  //       if (!startRingAnimation || !ringRef.current || !cylinderRef.current) {
-  //         return;
-  //       }
+    const navbar = document.getElementById(navbarId);
+    if (!navbar) {
+      return;
+    }
 
-  //       const navbar = document.getElementById(navbarId);
-  //       if (!navbar) {
-  //         return;
-  //       }
+    const { x: currentX, y: currentY } = cylinderRef.current.getBoundingClientRect();
+    const { x: targetX, y: targetY } = navbar.getBoundingClientRect();
 
-  //       const { x: currentX, y: currentY } = cylinderRef.current.getBoundingClientRect();
-  //       const { x: targetX, y: targetY } = navbar.getBoundingClientRect();
+    ringRef.current.style.display = 'block';
+    ringRef.current.animate(
+      [
+        {
+          top: currentY,
+          left: currentX,
+        },
+        {
+          top: targetY,
+          left: targetX,
+        },
+      ],
+      { duration: 1000, easing: 'ease-in-out' }
+    );
 
-  //       ringRef.current.style.display = 'block';
-  //       ringRef.current.animate(
-  //         [
-  //           {
-  //             top: currentY,
-  //             left: currentX,
-  //           },
-  //           {
-  //             top: targetY,
-  //             left: targetX,
-  //           },
-  //         ],
-  //         { duration: 1000, easing: 'ease-in-out' }
-  //       );
-  //     });
+    // const unsubscribe = scrollY.on('change', (latest) => {
+    //   let startRingAnimation = false;
+    //   if (latest >= 400) {
+    //     startRingAnimation = true;
+    //   }
 
-  //     return () => unsubscribe();
-  //   }, [scrollY]);
+    // });
+
+    // return () => unsubscribe();
+  }, [scrollY]);
 
   return (
     <>
-      <Circle ref={ringRef} className="hidden" />
+      <div className="z-100 size-16 rounded-full border-2 border-yellow-400" />
 
       <motion.div
         ref={cylinderRef}
