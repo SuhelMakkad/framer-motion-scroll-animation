@@ -132,5 +132,11 @@
 }
 
 @utility wrapper {
-  @apply container-padding @container/main mx-auto flex w-full flex-1 flex-col py-4 md:py-6;
+  @apply @container/main mx-auto flex w-full flex-1 flex-col container-padding py-4 md:py-6;
+}
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

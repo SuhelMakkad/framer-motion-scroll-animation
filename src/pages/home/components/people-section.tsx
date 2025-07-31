@@ -2,13 +2,15 @@ import { motion, useScroll, useTransform } from 'motion/react';
 
 import { PeopleRow } from '@/components/icons/people-row';
 
+import { scrollThreshold } from './constant';
+
 export const PeopleSection = () => {
   const { scrollY } = useScroll();
 
   // Animation threshold - similar to cylinder animation
-  const peopleOpacity = useTransform(scrollY, [0, 400], [0, 1]);
-  const peopleY = useTransform(scrollY, [0, 400], [250, 50]);
-  const peopleScale = useTransform(scrollY, [0, 400], [1.2, 1]);
+  const peopleOpacity = useTransform(scrollY, [0, scrollThreshold], [0, 1]);
+  const peopleY = useTransform(scrollY, [0, scrollThreshold], [250, 50]);
+  const peopleScale = useTransform(scrollY, [0, scrollThreshold], [1.2, 1]);
 
   return (
     <motion.div

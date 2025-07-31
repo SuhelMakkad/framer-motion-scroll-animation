@@ -12,7 +12,7 @@ export const HomePage = () => {
 
         <PeopleSection />
 
-        <section className="h-[calc(100vh*2)]" />
+        <section className="h-[calc(100vh*4)]" />
       </main>
     </>
   );

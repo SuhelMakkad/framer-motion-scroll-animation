@@ -7,6 +7,8 @@ import { Cylinder } from '@/components/icons/cylinder';
 import { navbarLogoId } from '@/layout/global/navbar';
 import { cn } from '@/lib/utils';
 
+import { scrollThreshold } from './constant';
+
 export const CylinderSection = () => {
   const { scrollY } = useScroll();
   const cylinderRef = useRef<HTMLDivElement>(null);
@@ -14,8 +16,8 @@ export const CylinderSection = () => {
   const [thresholdReached, setThresholdReached] = useState(false);
 
   // Transform scroll progress to move cylinder up slightly
-  const translateY = useTransform(scrollY, [0, 400], [0, -250]);
-  const textColor = useTransform(scrollY, [0, 400], ['#f9e500', '#ffffff']);
+  const translateY = useTransform(scrollY, [0, scrollThreshold], [0, -250]);
+  const textColor = useTransform(scrollY, [0, scrollThreshold], ['#f9e500', '#ffffff']);
 
   useEffect(() => {
     const unsubscribe = scrollY.on('change', (latest) => {

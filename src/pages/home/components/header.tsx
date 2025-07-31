@@ -1,13 +1,15 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 
+import { scrollThreshold } from './constant';
+
 export const Header = () => {
   const { scrollY } = useScroll();
 
   // Transform scroll progress to opacity and position values
   const h1Opacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const h2Opacity = useTransform(scrollY, [100, 400], [0, 1]);
-  const translateYContainer = useTransform(scrollY, [100, 400], [0, -100]); // Parallax effect: moves up by 50%
-  const translateYHeading = useTransform(scrollY, [100, 400], [0, -150]); // Parallax effect: moves up by 50%
+  const h2Opacity = useTransform(scrollY, [100, scrollThreshold], [0, 1]);
+  const translateYContainer = useTransform(scrollY, [100, scrollThreshold], [0, -100]); // Parallax effect: moves up by 50%
+  const translateYHeading = useTransform(scrollY, [100, scrollThreshold], [0, -150]); // Parallax effect: moves up by 50%
 
   return (
     <motion.header
