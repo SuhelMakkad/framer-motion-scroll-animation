@@ -1,63 +1,75 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Cylinder } from '@/components/icons/cylinder';
 
-import { navbarId } from '@/layout/global/navbar';
+import { navbarLogoId } from '@/layout/global/navbar';
 import { cn } from '@/lib/utils';
 
 export const CylinderSection = () => {
   const { scrollY } = useScroll();
   const cylinderRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<SVGSVGElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const [thresholdReached, setThresholdReached] = useState(false);
 
   // Transform scroll progress to move cylinder up slightly
   const translateY = useTransform(scrollY, [0, 400], [0, -250]);
   const textColor = useTransform(scrollY, [0, 400], ['#f9e500', '#ffffff']);
 
   useEffect(() => {
-    if (!ringRef.current || !cylinderRef.current) {
-      return;
-    }
+    const unsubscribe = scrollY.on('change', (latest) => {
+      if (latest < 400 || !ringRef.current || !cylinderRef.current || thresholdReached) {
+        return;
+      }
 
-    const navbar = document.getElementById(navbarId);
-    if (!navbar) {
-      return;
-    }
+      const navbar = document.getElementById(navbarLogoId);
+      if (!navbar) {
+        return;
+      }
 
-    const { x: currentX, y: currentY } = cylinderRef.current.getBoundingClientRect();
-    const { x: targetX, y: targetY } = navbar.getBoundingClientRect();
+      const { top: currentTop, left: currentLeft } = cylinderRef.current.getBoundingClientRect();
+      const {
+        top: targetTop,
+        left: targetLeft,
+        width: targetWidth,
+        height: targetHeight,
+      } = navbar.getBoundingClientRect();
 
-    ringRef.current.style.display = 'block';
-    ringRef.current.animate(
-      [
-        {
-          top: currentY,
-          left: currentX,
-        },
-        {
-          top: targetY,
-          left: targetX,
-        },
-      ],
-      { duration: 1000, easing: 'ease-in-out' }
-    );
+      const { width: currentWidth, height: currentHeight } =
+        cylinderRef.current.getElementsByTagName('ellipse')?.[0]?.getBoundingClientRect() || {};
 
-    // const unsubscribe = scrollY.on('change', (latest) => {
-    //   let startRingAnimation = false;
-    //   if (latest >= 400) {
-    //     startRingAnimation = true;
-    //   }
+      ringRef.current.style.display = 'block';
+      ringRef.current.animate(
+        [
+          {
+            top: `${currentTop}px`,
+            left: `${currentLeft}px`,
+            width: `${currentWidth}px`,
+            height: `${currentHeight}px`,
+          },
+          {
+            top: `${targetTop}px`,
+            left: `${targetLeft}px`,
+            width: `${targetWidth}px`,
+            height: `${targetHeight}px`,
+          },
+        ],
+        { duration: 1000, easing: 'ease-in-out', fill: 'forwards' }
+      );
 
-    // });
+      setThresholdReached(true);
+    });
 
-    // return () => unsubscribe();
-  }, [scrollY]);
+    return () => unsubscribe();
+  }, [scrollY, thresholdReached]);
 
   return (
     <>
-      <div className="z-100 size-16 rounded-full border-2 border-yellow-400" />
+      <div
+        ref={ringRef}
+        className="fixed z-100 hidden size-8 rounded-full border-2 border-yellow-400"
+      />
 
       <motion.div
         ref={cylinderRef}

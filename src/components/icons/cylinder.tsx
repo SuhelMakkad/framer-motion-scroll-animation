@@ -9,8 +9,8 @@ export const Cylinder = (props: React.ComponentProps<'svg'>) => {
       {...props}
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M9.99191 116.096C8.44874 116.096 7.19775 117.347 7.19775 118.89V249.687C7.19775 250.27 7.37655 250.812 7.68234 251.26C7.36022 252.593 7.19775 253.931 7.19775 255.276C7.19775 314.991 327.673 363.399 723 363.399C1118.33 363.399 1438.8 314.991 1438.8 255.276C1438.8 253.93 1438.64 252.591 1438.32 251.257C1438.62 250.81 1438.8 250.269 1438.8 249.687V118.89C1438.8 117.347 1437.55 116.096 1436.01 116.096H9.99191Z"
         fill="currentColor"
       />
@@ -25,7 +25,7 @@ export const Cylinder = (props: React.ComponentProps<'svg'>) => {
         ry="108.123"
         fill="var(--background)"
         stroke="currentColor"
-        stroke-width="13.9708"
+        strokeWidth="13.9708"
       />
     </svg>
   );
